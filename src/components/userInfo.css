@@ -1,0 +1,18 @@
+.userInfo {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.labelContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+    padding: 0 0 0 24px;
+}
+
+.label {
+    margin: 14px 0 7px 0;
+}

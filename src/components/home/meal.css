@@ -1,0 +1,13 @@
+.mealSection {
+    text-align: center;
+    background-color: rgb(120, 181, 255);
+    border-radius: 7px;
+    padding: 7px;
+    margin: 17px 11px 0 0;
+}
+.mealSection > div > button:first-child {
+    margin-right: 6px;
+}
+.mealName {
+    margin-bottom: 19px;
+}

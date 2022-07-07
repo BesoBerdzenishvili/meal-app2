@@ -1,0 +1,10 @@
+header {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-around;
+    padding: 17px;
+}
+
+.headerBtn {
+    margin-right: 14px;
+}

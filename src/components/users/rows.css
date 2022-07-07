@@ -1,0 +1,13 @@
+.userRow {
+    display: flex;
+    align-items: center;
+    margin: 14px 0;
+}
+.userName {
+    margin: 0 344px;
+}
+
+.userRowBtn {
+    padding: 4px 8px;
+    margin-right: 8px;
+}
