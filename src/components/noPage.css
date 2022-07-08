@@ -1,0 +1,15 @@
+.NoPage {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+     height: 100vh; /* change to 90vh for Header */
+}
+
+.NoPage > h1 {
+    font-size: 210px;
+}
+
+.NoPage > p {
+    font-size: 54px;
+}

@@ -1,5 +1,6 @@
 import './login.css';
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+// import { Link } from 'react-router-dom';
 
 export default function Login({usersDB, setLogin, setCurrentUser}) {
   const [user, setUser] = useState('');
@@ -7,7 +8,7 @@ export default function Login({usersDB, setLogin, setCurrentUser}) {
 
   const auth = (input, DBUsers) => {
     DBUsers[0].some(i=>i === input[0]) && DBUsers[1].some(i=>i === input[1]) ? setLogin(true) : alert('Incorrect username or password');
-    setCurrentUser(input[0])  // user name
+    setCurrentUser(input[0])
   }
   return (
     <div className='login'>
@@ -22,6 +23,7 @@ export default function Login({usersDB, setLogin, setCurrentUser}) {
         <div>
             <button onClick={()=>auth([user, pass], [usersDB.map(i=>i.name), usersDB.map(i=>i.password)])}>Login</button>
             <button>SignUp</button>
+            {/* <Link to="/signup"><button>SignUp</button></Link> */}
         </div>
     </div>
   )
