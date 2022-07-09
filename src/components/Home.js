@@ -13,25 +13,27 @@ export default function Home(props) {
     // console.log(jName, 'jName', jIndex, 'jIndex', jDate, 'jDate', jId, 'jId')
     setShowEdit(!showEdit)
   }
+  const sortedMeals = props.asc ? props.mealRowDB.sort() : props.mealRowDB.reverse()
+  // console.log(sortedMeals, 'sortedMeals')
   return (
     <div>
-          {props.mealRowDB.map(i=>(
+          {sortedMeals.map(i=>(
             <section key={i}>
               <Headings rowDate={i} />
               <div className='innerSection'>
               <button className='addBtn' onClick={()=>setShowCreate(!showCreate)}>Add meal</button>
                 {props.mealDB.map((j, index)=>(
-                  i === j.date &&
-                  <Meal key={j.id} name={j.name}>
+                  // i === j.date &&
+                  <Meal key={j.id} name={j.name} calories={j.calories} date={j.date} time={j.time}>
                     <button onClick={()=>editBtn(j.name, index, j.date, j.id)}>Edit</button>
-                    <button>Delete</button>
+                    <button onClick={()=>props.delMeal(j.id)}>Delete</button>
                   </Meal>
                 ))}
               </div>
             </section>
           ))}
-          {showEdit && <MealInfo purpose='edit' setShowEdit={setShowEdit} editMeal={editMeal} mealDB={props.mealDB} changeMeal={props.changeMeal}/>}
-          {showCreate && <MealInfo setShowCreate={setShowCreate} editMeal={editMeal} mealDB={props.mealDB} changeMeal={props.changeMeal}/>}
+          {showEdit && <MealInfo setShowEdit={setShowEdit} editMeal={editMeal} mealDB={props.mealDB} changeMeal={props.changeMeal} purpose='edit'/>}
+          {showCreate && <MealInfo addMeal={props.addMeal} setShowCreate={setShowCreate} editMeal={editMeal} mealDB={props.mealDB} changeMeal={props.changeMeal}/>}
     </div>
   )
 }

@@ -30,9 +30,8 @@ function App() {
     date: '19/02/2022'
   }
   ]); // save in local storage // take data from mock.json & put here (const data = data from mock.json) as alternative (||) to local storage
-  const [mealRowDB ] = useState([
-    '2022-17-02', '2022-01-02'
-  ])
+  const [asc, setAsc] = useState(true);
+  const [mealRowDB ] = useState(['2022-17-02', '2022-01-02'])
 
   const [mealDB, setMealDB] = useState([
             {
@@ -120,8 +119,8 @@ function App() {
               time: '01:14'
           }
     ]) // save in local storage
-  const [login, setLogin] = useState(false);
-  const [currentUser, setCurrentUser] = useState(''); // save in local storage
+    const [login, setLogin] = useState(false);
+    const [currentUser, setCurrentUser] = useState(''); // save in local storage
   const [sameUser, setSameUser] = useState(true); // save in local storage
 
   const addUser = (img, user, pass, type) => { // addOrChangeUser
@@ -144,29 +143,28 @@ function App() {
     // console.log(usersDB[2].img, 'bb img')
   }
   const addMeal = (name, calories, date, time) => {
-    mealDB.every(i=>i.row !== date) && setMealDB([...mealDB, {row: date, meals: [{name: name, calories: calories,	date: date, time: time}]}])
-    if (mealDB.some(i=>i.row === date)) {
-
-    }
+    (name && calories && date && time) ? 
+    setMealDB([...mealDB, {id: Math.floor(Math.random()*90000000), name: name, calories: calories, date: date, time: time}])
+    :
+    alert('Please fill in all fields')
+  }
+  const delMeal = (id) => {
+    setMealDB(mealDB.filter(i=>i.id !== id))
   }
   const changeMeal = (id, name, calories, date, time) => {
-    // const newVal = mealDB.map(i=>i.meals.date === date ? {name: name, calories: calories, date: date, time: time} : i);
-    const newVal = mealDB.filter(i=>i.row === date);
-    const newVal2 = newVal[0].meals.filter(i=>i.id === id);
-    newVal2[0].name = name;
-    newVal2[0].calories = calories;
-    // newVal2[0].date = date;
-    newVal2[0].time = time;
-    console.log(newVal2, 'newVal2', id, 'id')
-        // setMealDB(newVal)
-        // console.log(name, 'name', calories, 'cal', date, 'date', time, 'time')
+    setMealDB(mealDB.map(i=>i.id === id ? {...i, name: name, calories: calories, date: date, time: time} : i));
   }
+
+  // const sortMeals = () => {
+  //   const newVal = asc ? mealRowDB.sort() : mealRowDB.reverse();
+  //   console.log(newVal, 'ascDesc')
+  // }
 
   return (
     <BrowserRouter>
-    {login && <Header setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
+    {login && <Header asc={asc} setAsc={setAsc} setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
       <Routes>
-          <Route index element={login ? <Home mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
+          <Route index element={login ? <Home delMeal={delMeal} asc={asc} mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
           <Route path="/users" element={login ? <Users usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
           <Route path="/signup" element={login ? <UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> : <Navigate to="/" /> } />
           <Route path="/profile" element={login ? <UserInfo changeUser={changeUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} /> : <Navigate to="/" /> } />
