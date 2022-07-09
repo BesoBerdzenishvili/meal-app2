@@ -30,101 +30,95 @@ function App() {
     date: '19/02/2022'
   }
   ]); // save in local storage // take data from mock.json & put here (const data = data from mock.json) as alternative (||) to local storage
+  const [mealRowDB ] = useState([
+    '2022-17-02', '2022-01-02'
+  ])
+
   const [mealDB, setMealDB] = useState([
-      {
-        row: '2022-01-17',
-        meals: [
             {
                 id: '54646545',
                 name: 'Olivie',
                 calories: '350',
-                date: '01-02-2022',
+                date: '2022-17-02',
                 time: '01:14'
             },
             {
               id: '74846545',
               name: 'Ragu',
               calories: '350',
-              date: '01-02-2022',
+              date: '2022-17-02',
               time: '01:14'
-          }
-        ]
-      },
-      {
-        row: '2022-02-14',
-        meals: [
+            },
             {
               id: '345634646',
               name: 'Amalgham',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '65189816',
               name: 'Khachapuri',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '6189486',
               name: 'Tako',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '61684198',
               name: 'Chilly Dog',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '98168161',
               name: 'Hot Dog',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '6168461',
               name: 'Apple pie',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '61681661',
               name: 'Mosquito',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '616816511',
               name: 'Mexican',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '616816161',
               name: 'Avatar Flash',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
             },
             {
               id: '89198161',
               name: 'Bat',
               calories: '350',
-              date: '02-02-2022',
+              date: '2022-01-02',
               time: '01:14'
           }
-        ]
-      }
     ]) // save in local storage
   const [login, setLogin] = useState(false);
   const [currentUser, setCurrentUser] = useState(''); // save in local storage
@@ -155,12 +149,24 @@ function App() {
 
     }
   }
+  const changeMeal = (id, name, calories, date, time) => {
+    // const newVal = mealDB.map(i=>i.meals.date === date ? {name: name, calories: calories, date: date, time: time} : i);
+    const newVal = mealDB.filter(i=>i.row === date);
+    const newVal2 = newVal[0].meals.filter(i=>i.id === id);
+    newVal2[0].name = name;
+    newVal2[0].calories = calories;
+    // newVal2[0].date = date;
+    newVal2[0].time = time;
+    console.log(newVal2, 'newVal2', id, 'id')
+        // setMealDB(newVal)
+        // console.log(name, 'name', calories, 'cal', date, 'date', time, 'time')
+  }
 
   return (
     <BrowserRouter>
     {login && <Header setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
       <Routes>
-          <Route index element={login ? <Home addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
+          <Route index element={login ? <Home mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
           <Route path="/users" element={login ? <Users usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
           <Route path="/signup" element={login ? <UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> : <Navigate to="/" /> } />
           <Route path="/profile" element={login ? <UserInfo changeUser={changeUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} /> : <Navigate to="/" /> } />
