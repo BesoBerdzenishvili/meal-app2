@@ -31,91 +31,91 @@ function App() {
   }
   ]); // save in local storage // take data from mock.json & put here (const data = data from mock.json) as alternative (||) to local storage
   const [asc, setAsc] = useState(true);
-  const [mealRowDB ] = useState(['2022-17-02', '2022-01-02'])
+  const [mealRowDB, setMealRowDB ] = useState(['2022-02-17', '2022-02-01', '2022-11-02'])
 
   const [mealDB, setMealDB] = useState([
             {
                 id: '54646545',
                 name: 'Olivie',
                 calories: '350',
-                date: '2022-17-02',
+                date: '2022-02-17',
                 time: '01:14'
             },
             {
               id: '74846545',
               name: 'Ragu',
               calories: '350',
-              date: '2022-17-02',
+              date: '2022-02-17',
               time: '01:14'
             },
             {
               id: '345634646',
               name: 'Amalgham',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-02-01',
               time: '01:14'
             },
             {
               id: '65189816',
               name: 'Khachapuri',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-02-01',
               time: '01:14'
             },
             {
               id: '6189486',
               name: 'Tako',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-02-01',
               time: '01:14'
             },
             {
               id: '61684198',
               name: 'Chilly Dog',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-02-01',
               time: '01:14'
             },
             {
               id: '98168161',
               name: 'Hot Dog',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
             },
             {
               id: '6168461',
               name: 'Apple pie',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
             },
             {
               id: '61681661',
               name: 'Mosquito',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
             },
             {
               id: '616816511',
               name: 'Mexican',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
             },
             {
               id: '616816161',
               name: 'Avatar Flash',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
             },
             {
               id: '89198161',
               name: 'Bat',
               calories: '350',
-              date: '2022-01-02',
+              date: '2022-11-02',
               time: '01:14'
           }
     ]) // save in local storage
@@ -123,7 +123,7 @@ function App() {
     const [currentUser, setCurrentUser] = useState(''); // save in local storage
   const [sameUser, setSameUser] = useState(true); // save in local storage
 
-  const addUser = (img, user, pass, type) => { // addOrChangeUser
+  const addUser = (img, user, pass, type) => {
     usersDB.every(i=>i.name !== user) ? setUsersDB([...usersDB, {name: user, password: pass,	img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type ? type : 'user'}]) : alert('user with same name alredy exists. please choose another name')
     usersDB.every(i=>i.name !== user) && setSameUser(false);
     if (usersDB.some(i=>i.name=== user)) {
@@ -144,21 +144,27 @@ function App() {
   }
   const addMeal = (name, calories, date, time) => {
     (name && calories && date && time) ? 
-    setMealDB([...mealDB, {id: Math.floor(Math.random()*90000000), name: name, calories: calories, date: date, time: time}])
+    setMealDB([...mealDB, {id: Math.floor(Math.random()*90000000).toString(), name: name, calories: calories, date: date, time: time}])
     :
     alert('Please fill in all fields')
+    // if new row value then add row value to mealRowDB
+    const mealDates = mealDB.map(i=>i.date)
+    const difference = mealDates.filter(i=>!mealRowDB.includes(i))
+    console.log(mealDB, 'difference')
+    difference.length > 0 && setMealRowDB([...mealRowDB, difference[0]])
+    // console.log(mealDates, 'mealDates', mealRowDB, 'mealRowDB',  difference, difference.length, 'difLength')
   }
   const delMeal = (id) => {
     setMealDB(mealDB.filter(i=>i.id !== id))
+    // if row value is deleted then delete it from mealRowDB
+    const mealDates = mealDB.map(i=>i.date)
+    const difference = mealDates.filter(i=>!mealRowDB.includes(i))
+    difference.length > 0 && setMealRowDB(mealRowDB.filter(i=>i!==difference[0]))
+    console.log(mealDates, 'mealDates', mealRowDB, 'mealRowDB',  difference, difference.length, 'difLength')
   }
   const changeMeal = (id, name, calories, date, time) => {
     setMealDB(mealDB.map(i=>i.id === id ? {...i, name: name, calories: calories, date: date, time: time} : i));
   }
-
-  // const sortMeals = () => {
-  //   const newVal = asc ? mealRowDB.sort() : mealRowDB.reverse();
-  //   console.log(newVal, 'ascDesc')
-  // }
 
   return (
     <BrowserRouter>

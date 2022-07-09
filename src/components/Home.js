@@ -13,8 +13,7 @@ export default function Home(props) {
     // console.log(jName, 'jName', jIndex, 'jIndex', jDate, 'jDate', jId, 'jId')
     setShowEdit(!showEdit)
   }
-  const sortedMeals = props.asc ? props.mealRowDB.sort() : props.mealRowDB.reverse()
-  // console.log(sortedMeals, 'sortedMeals')
+  const sortedMeals = props.asc ? props.mealRowDB.sort() : props.mealRowDB.sort().reverse()
   return (
     <div>
           {sortedMeals.map(i=>(
@@ -23,7 +22,7 @@ export default function Home(props) {
               <div className='innerSection'>
               <button className='addBtn' onClick={()=>setShowCreate(!showCreate)}>Add meal</button>
                 {props.mealDB.map((j, index)=>(
-                  // i === j.date &&
+                  i === j.date &&
                   <Meal key={j.id} name={j.name} calories={j.calories} date={j.date} time={j.time}>
                     <button onClick={()=>editBtn(j.name, index, j.date, j.id)}>Edit</button>
                     <button onClick={()=>props.delMeal(j.id)}>Delete</button>

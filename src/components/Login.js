@@ -14,7 +14,7 @@ export default function Login({usersDB, setLogin, setCurrentUser}) {
     <div className='login'>
         <label>
             Username: 
-            <input value={user} onChange={e=>setUser(e.target.value)} type='text' placeholder='username' />
+            <input value={user} onChange={e=>setUser(e.target.value)} type='text' placeholder='username' autoFocus />
         </label>
         <label className='passLabel'>
             Password: 
