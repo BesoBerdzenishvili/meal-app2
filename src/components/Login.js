@@ -1,6 +1,6 @@
 import './login.css';
 import React, {useState} from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function Login({usersDB, setLogin, setCurrentUser}) {
   const [user, setUser] = useState('');
@@ -18,12 +18,11 @@ export default function Login({usersDB, setLogin, setCurrentUser}) {
         </label>
         <label className='passLabel'>
             Password: 
-            <input value={pass} onChange={e=>setPass(e.target.value)}  type='password' placeholder='password' />
+            <input onKeyDown={(e)=>e.key === 'Enter' && auth([user, pass], [usersDB.map(i=>i.name), usersDB.map(i=>i.password)])} value={pass} onChange={e=>setPass(e.target.value)}  type='password' placeholder='password' />
         </label>
         <div>
-            <button onClick={()=>auth([user, pass], [usersDB.map(i=>i.name), usersDB.map(i=>i.password)])}>Login</button>
-            <button>SignUp</button>
-            {/* <Link to="/signup"><button>SignUp</button></Link> */}
+            <button onClick={()=> auth([user, pass], [usersDB.map(i=>i.name), usersDB.map(i=>i.password)])}>Login</button>
+            <Link to="/signup"><button>SignUp</button></Link>
         </div>
     </div>
   )

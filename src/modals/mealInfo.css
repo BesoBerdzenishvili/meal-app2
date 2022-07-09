@@ -6,6 +6,9 @@
     width: 444px;
     padding: 14px 0;
     border-radius: 7px;
+    position: fixed;
+    left: 35%;
+    top: 25%
 }
 .innerMealInfo {
     display: flex;

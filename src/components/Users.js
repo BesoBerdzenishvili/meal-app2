@@ -7,7 +7,7 @@ import Modal from '../modals/Modal'
 export default function Users(props) {
   const [showEdit, setShowEdit] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
-  const [editUser, setEditUser] = useState(false);
+  const [editUser, setEditUser] = useState('');
   // console.log(props.usersDB.sort((a, b) => {
   //   return new Date(b.date) - new Date(a.date);
   // }), 'useDB')

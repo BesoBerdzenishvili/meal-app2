@@ -2,6 +2,7 @@ import './header.css';
 import { Link } from 'react-router-dom';
 
 export default function Header(props) {
+  const profileInfo = props.usersDB.filter(i=>i.name === props.currentUser)
   return (
     <header>
         <div>
@@ -10,7 +11,7 @@ export default function Header(props) {
         </div>
         <button>Asc</button>
         <div>
-          <Link to="/users"><button className='headerBtn'>Users</button></Link>
+          {profileInfo[0].type === ('admin' || 'moderator') && <Link to="/users"><button className='headerBtn'>Users</button></Link>}
           <button onClick={()=>props.setLogin(false)}>Log out</button>
         </div>
     </header>

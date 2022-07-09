@@ -26,101 +26,101 @@ function App() {
     name: 'bb',
     password: '11',
     img: 'https://thumbs.dreamstime.com/b/portrait-unhappy-man-eating-broccoli-salad-kitchen-153934016.jpg',
-    type: 'user',
+    type: 'admin',
     date: '19/02/2022'
   }
   ]); // save in local storage // take data from mock.json & put here (const data = data from mock.json) as alternative (||) to local storage
-  const [mealDB] = useState([
+  const [mealDB, setMealDB] = useState([
       {
-        row: '01/02/2022',
+        row: '2022-01-17',
         meals: [
             {
                 id: '54646545',
                 name: 'Olivie',
                 calories: '350',
-                date: '01/02/2022',
+                date: '01-02-2022',
                 time: '01:14'
             },
             {
               id: '74846545',
               name: 'Ragu',
               calories: '350',
-              date: '01/02/2022',
+              date: '01-02-2022',
               time: '01:14'
           }
         ]
       },
       {
-        row: '02/02/2022',
+        row: '2022-02-14',
         meals: [
             {
               id: '345634646',
               name: 'Amalgham',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '65189816',
               name: 'Khachapuri',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '6189486',
               name: 'Tako',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '61684198',
               name: 'Chilly Dog',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '98168161',
               name: 'Hot Dog',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '6168461',
               name: 'Apple pie',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '61681661',
               name: 'Mosquito',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '616816511',
               name: 'Mexican',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '616816161',
               name: 'Avatar Flash',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
             },
             {
               id: '89198161',
               name: 'Bat',
               calories: '350',
-              date: '02/02/2022',
+              date: '02-02-2022',
               time: '01:14'
           }
         ]
@@ -147,17 +147,23 @@ function App() {
     } else {
         setUsersDB(usersDB.map(i=>i.name === savedName ? {...i, name: user, pass: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i))
     }
-    console.log(pass, 'savedName')
+    // console.log(usersDB[2].img, 'bb img')
+  }
+  const addMeal = (name, calories, date, time) => {
+    mealDB.every(i=>i.row !== date) && setMealDB([...mealDB, {row: date, meals: [{name: name, calories: calories,	date: date, time: time}]}])
+    if (mealDB.some(i=>i.row === date)) {
+
+    }
   }
 
   return (
     <BrowserRouter>
-    {login && <Header setLogin={setLogin} />}
+    {login && <Header setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
       <Routes>
-          <Route index element={login ? <Home mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
+          <Route index element={login ? <Home addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
           <Route path="/users" element={login ? <Users usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
-          <Route path="/signup" element={<UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} info='signup' />} />
-          <Route path="/profile" element={<UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} />} />
+          <Route path="/signup" element={login ? <UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> : <Navigate to="/" /> } />
+          <Route path="/profile" element={login ? <UserInfo changeUser={changeUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} /> : <Navigate to="/" /> } />
           <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

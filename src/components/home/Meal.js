@@ -6,8 +6,7 @@ export default function Meal(props) {
     <div className='mealSection'>
         <h4 className='mealName'>{props.name}</h4>
         <div>
-            <button>Edit</button>
-            <button>Delete</button>
+            {props.children}
         </div>
     </div>
   )
