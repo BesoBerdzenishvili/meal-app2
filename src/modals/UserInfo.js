@@ -1,4 +1,4 @@
-import './modal.css';
+import './userInfo.css';
 import React, {useState} from 'react';
 
 export default function Modal(props) {

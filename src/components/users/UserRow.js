@@ -1,8 +1,8 @@
 import React from 'react'
-import './rows.css'
+import './userRow.css'
 
 
-export default function Rows(props) {
+export default function UserRow(props) {
   return (
     <div className='userRow' >
         <img src={props.img} alt='profile' width='64px'/>

@@ -1,7 +1,7 @@
 import React from 'react'
-import './meal.css'
+import './mealData.css'
 
-export default function Meal(props) {
+export default function MealData(props) {
   return (
     <div className='mealSection'>
         <h4 className='mealName'>{props.name}</h4>

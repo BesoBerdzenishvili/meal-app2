@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import './userInfo.css';
+import './userData.css';
 import avatar from '../pics/genericAvatar.png';
 
-export default function UserInfo(props) {
+export default function UserData(props) {
     const profileInfo = props.usersDB.filter(i=>i.name === props.currentUser)
 
     const [img, setImg] = useState(props.purpose === 'signup' ? avatar : profileInfo[0].img )
@@ -17,7 +17,7 @@ export default function UserInfo(props) {
       };
 
   return (
-    <div className='userInfo'>
+    <div className='UserData'>
         <img src={img} width='324px' alt='avatar' />
         <div className='labelContainer'>
             <label className='label'>
