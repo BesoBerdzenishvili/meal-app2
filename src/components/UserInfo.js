@@ -11,8 +11,6 @@ export default function UserInfo(props) {
     const [pass, setPass] = useState(props.purpose === 'signup' ? '' : profileInfo[0].password)
     const [passTwo, setPassTwo] = useState('')
 
-    // console.log(img, 'img')
-
     const updateAvatarImg = (e) => {
         const [file] = e.target.files;
         setImg(URL.createObjectURL(file));

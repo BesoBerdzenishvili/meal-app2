@@ -127,6 +127,7 @@ function App() {
       const saved = localStorage.getItem('currentUser');
       return saved ? JSON.parse(saved) : '';
     });
+  const [editUser, setEditUser] = useState('');
     useEffect(() => {
       localStorage.setItem('login', JSON.stringify(login));
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -194,7 +195,7 @@ function App() {
     {login && <Header asc={asc} setAsc={setAsc} setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
       <Routes>
           <Route index element={login ? <Home delMeal={delMeal} asc={asc} mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin} setSameUser={setSameUser}/>} />
-          <Route path="/users" element={login ? <Users usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
+          <Route path="/users" element={login ? <Users editUser={editUser} setEditUser={setEditUser} usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
           <Route path="/signup" element={<UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> } />
           <Route path="/profile" element={login ? <UserInfo changeUser={changeUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} /> : <Navigate to="/" /> } />
           <Route path="*" element={<NoPage />} />
