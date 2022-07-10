@@ -11,7 +11,7 @@ export default function UserInfo(props) {
     const [pass, setPass] = useState(props.purpose === 'signup' ? '' : profileInfo[0].password)
     const [passTwo, setPassTwo] = useState('')
 
-    console.log(img, 'img')
+    // console.log(img, 'img')
 
     const updateAvatarImg = (e) => {
         const [file] = e.target.files;
@@ -39,14 +39,17 @@ export default function UserInfo(props) {
                 <input required type='password' placeholder='confirm password' value={passTwo} onChange={e=>setPassTwo(e.target.value)} />
             </label>
         </div>
-        <Link to={(user && pass && passTwo && pass === passTwo && !props.sameName) && "/"}>
-            {
-            props.purpose === 'signup'
-            ?
-            <button onClick={()=>{(!user || !pass) && alert('Please fill in all required fields (*)'); pass === passTwo ? props.addUser(img, user, pass) : alert('passwords don\'t match')}} >Signup</button>
-            :
-            <button onClick={()=>{(!user || !pass) && alert('Please fill in all required fields (*)'); pass === passTwo ? props.changeUser(profileInfo[0].name, img, user, pass) : alert('passwords don\'t match')}} >Save</button>
-            }
+        <Link to={(user && pass && passTwo && pass === passTwo && !props.sameUser) && "/"}>
+            <button
+                onClick={()=>{(!user || !pass) && alert('Please fill in all required fields (*)');
+                props.purpose === 'signup'
+                ?
+                props.addUser(img, user, pass, passTwo, null, 1)
+                :
+                props.changeUser(profileInfo[0].name, img, user, pass, passTwo)}}
+            >
+                {props.purpose === 'signup' ? 'Signup' : 'Save'}
+            </button>
         </Link>
     </div>
   )

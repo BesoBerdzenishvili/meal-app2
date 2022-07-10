@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import Header from './components/Header';
@@ -119,28 +119,51 @@ function App() {
               time: '01:14'
           }
     ]) // save in local storage
-    const [login, setLogin] = useState(false);
-    const [currentUser, setCurrentUser] = useState(''); // save in local storage
-  const [sameUser, setSameUser] = useState(true); // save in local storage
+    const [login, setLogin] = useState(() => {
+      const saved = localStorage.getItem('login');
+      return saved ? JSON.parse(saved) : false;
+    });
+    const [currentUser, setCurrentUser] = useState(() => {
+      const saved = localStorage.getItem('currentUser');
+      return saved ? JSON.parse(saved) : '';
+    });
+    useEffect(() => {
+      localStorage.setItem('login', JSON.stringify(login));
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }, [login, currentUser]);
+  const [sameUser, setSameUser] = useState(true);
 
-  const addUser = (img, user, pass, type) => {
-    usersDB.every(i=>i.name !== user) ? setUsersDB([...usersDB, {name: user, password: pass,	img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type ? type : 'user'}]) : alert('user with same name alredy exists. please choose another name')
-    usersDB.every(i=>i.name !== user) && setSameUser(false);
-    if (usersDB.some(i=>i.name=== user)) {
-      const newVal = usersDB.map(i=>i.name === user ? {...i, name: user, pass: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i)
+  const addUser = (img, user, pass, passTwo, type, same) => {
+    if (pass !== passTwo) {
+      alert('passwords don\'t match')
+    } else if (usersDB.every(i=>i.name !== user)) {
+      setUsersDB([...usersDB, {name: user, password: pass,	img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type ? type : 'user'}]);
+      setSameUser(false);
+    } else if (usersDB.some(i=>i.name=== user) && !same) {
+      const newVal = usersDB.map(i=>i.name === user ? {...i, name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i)
       setUsersDB(newVal)
-      console.log(newVal, 'newVal')
-    }
+      if (same) {
+        setSameUser(true);
+        alert('User with this name alredy exists. Please try another one')
+      }
+    } else {
+      alert('user with same name alredy exists. please choose another name')
+    }    
     // in edit user if some(i=>i.name === user) then alert('this users alredy exists') else adduser like in addUser()
   }
 
-  const changeUser = (savedName, img, user, pass, type) => {
-    if (type) {
-        setUsersDB(usersDB.map(i=>i.name === savedName && { name: user, pass: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type}))
+  const changeUser = (savedName, img, user, pass, passTwo, type) => {
+    if (pass !== passTwo) {
+      alert('passwords don\'t match')
+    } else if (type) {
+        setUsersDB(usersDB.map(i=>i.name === savedName ? { name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type} : i))
+        setCurrentUser(user)
     } else {
-        setUsersDB(usersDB.map(i=>i.name === savedName ? {...i, name: user, pass: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i))
+        setUsersDB(usersDB.map(i=>i.name === savedName ? {...i, name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i))
+        setCurrentUser(user)
     }
     // console.log(usersDB[2].img, 'bb img')
+    console.log(usersDB, 'usersDB')
   }
   const addMeal = (name, calories, date, time) => {
     (name && calories && date && time) ? 
@@ -170,9 +193,9 @@ function App() {
     <BrowserRouter>
     {login && <Header asc={asc} setAsc={setAsc} setLogin={setLogin} currentUser={currentUser} usersDB={usersDB} />}
       <Routes>
-          <Route index element={login ? <Home delMeal={delMeal} asc={asc} mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin}/>} />
+          <Route index element={login ? <Home delMeal={delMeal} asc={asc} mealRowDB={mealRowDB} changeMeal={changeMeal} addMeal={addMeal} mealDB={mealDB}/> : <Login setCurrentUser={setCurrentUser} usersDB={usersDB} setLogin={setLogin} setSameUser={setSameUser}/>} />
           <Route path="/users" element={login ? <Users usersDB={usersDB} setUsersDB={setUsersDB} changeUser={changeUser} addUser={addUser} /> : <Navigate to="/" /> } />
-          <Route path="/signup" element={login ? <UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> : <Navigate to="/" /> } />
+          <Route path="/signup" element={<UserInfo addUser={addUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} purpose='signup' /> } />
           <Route path="/profile" element={login ? <UserInfo changeUser={changeUser} sameUser={sameUser} usersDB={usersDB} currentUser={currentUser} /> : <Navigate to="/" /> } />
           <Route path="*" element={<NoPage />} />
       </Routes>

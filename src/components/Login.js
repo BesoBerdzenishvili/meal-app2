@@ -2,13 +2,18 @@ import './login.css';
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Login({usersDB, setLogin, setCurrentUser}) {
+export default function Login({usersDB, setLogin, setCurrentUser, setSameUser}) {
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
 
   const auth = (input, DBUsers) => {
-    DBUsers[0].some(i=>i === input[0]) && DBUsers[1].some(i=>i === input[1]) ? setLogin(true) : alert('Incorrect username or password');
-    setCurrentUser(input[0])
+    if (DBUsers[0].some(i=>i === input[0]) && DBUsers[1].some(i=>i === input[1])) {
+      setLogin(true)
+      setCurrentUser(input[0])
+      setSameUser(false);
+    } else {
+      alert('Incorrect username or password')
+    }
   }
   return (
     <div className='login'>
