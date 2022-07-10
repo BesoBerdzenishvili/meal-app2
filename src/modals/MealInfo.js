@@ -16,9 +16,17 @@ export default function MealInfo(props) {
         setTime('')
         props.purpose === 'edit' ? props.setShowEdit(false) : props.setShowCreate(false)
     }
+    const handleEdit = () => {
+        props.changeMeal(mealInfo[0].id, meal, calories, date, time);
+        props.setShowEdit(false)
+    }
+    const handleAdd = () => {
+        props.addMeal(meal, calories, date, time);
+        (meal && calories && date && time) && props.setShowCreate(false)
+    }
   return (
     <div className='mealInfo'>
-        {props.purpose === 'edit' ? <h2>Add New Meal</h2> : <h2>Edit meal</h2>}
+        {props.purpose === 'edit' ? <h2>Edit {meal}</h2> : <h2>Add New Meal</h2>}
         <div className='innerMealInfo'>
         <label className='userLabel'>
                 Name: 
@@ -38,14 +46,7 @@ export default function MealInfo(props) {
             </label>
         </div>
         <div>
-            {
-            props.purpose === 'edit'
-            ?
-            <button onClick={()=>{props.changeMeal(mealInfo[0].id, meal, calories, date, time);props.setShowEdit(false)}}>save</button>
-            :
-            <button onClick={()=>{props.addMeal(meal, calories, date, time); props.setShowCreate(false)}}>save</button>
-            // close on save
-            }
+            <button onClick={()=>props.purpose === 'edit' ? handleEdit() : handleAdd()}>{props.purpose === 'edit' ? 'save' : 'submit'}</button>
             <button onClick={()=>clear()}>cancel</button>
         </div>
     </div>

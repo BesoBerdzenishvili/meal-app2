@@ -5,7 +5,6 @@ export default function Modal(props) {
   const profileInfo = props.usersDB.filter(i=>i.name === props.editUser)
 
   const [user, setUser] = useState(props.modal === 'edit' ? profileInfo[0].name : '')
-  console.log(user, 'user', )
   const [pass, setPass] = useState(props.modal === 'edit' ? profileInfo[0].password : '')
   const [type, setType] = useState(props.modal === 'edit' ? profileInfo[0].type : 'user');
   return (

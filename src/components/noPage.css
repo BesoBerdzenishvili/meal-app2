@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items:center;
     justify-content: center;
-     height: 100vh; /* change to 90vh for Header */
+    height: 90vh;
 }
 
 .NoPage > h1 {

@@ -6,7 +6,7 @@ import avatar from '../pics/genericAvatar.png';
 export default function UserInfo(props) {
     const profileInfo = props.usersDB.filter(i=>i.name === props.currentUser)
 
-    const [img, setImg] = useState(props.purpose === 'signup' ? avatar : profileInfo[0].img ) // gets value from props (SignIn ? 'genericAvatarPic' : img from usersDB)
+    const [img, setImg] = useState(props.purpose === 'signup' ? avatar : profileInfo[0].img )
     const [user, setUser] = useState(props.purpose === 'signup' ? '' : profileInfo[0].name)
     const [pass, setPass] = useState(props.purpose === 'signup' ? '' : profileInfo[0].password)
     const [passTwo, setPassTwo] = useState('')

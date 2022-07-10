@@ -6,19 +6,20 @@ import Users from './components/Users';
 import Login from './components/Login';
 import NoPage from './components/NoPage';
 import UserInfo from './components/UserInfo';
+import avatar from './pics/genericAvatar.png';
 function App() {
   const [usersDB, setUsersDB] = useState([
     {
-    name: 'MealAdmin',
-    password: '123456',
-    img: 'https://www.helpguide.org/wp-content/uploads/young-woman-having-a-midnight-snack.jpg',
+    name: 'superUser',
+    password: 'superUserPassword',
+    img: 'https://flyclipart.com/thumbs/icon-superman-973794.png',
     type: 'admin',
     date: '14/03/2022'
   },
   {
-    name: 'Asterisc',
+    name: 'mealLover',
     password: '1234',
-    img: 'https://i.ytimg.com/vi/gsMnHOKA-JI/hqdefault.jpg',
+    img: 'https://www.helpguide.org/wp-content/uploads/young-woman-having-a-midnight-snack.jpg',
     type: 'user',
     date: '17/01/2022'
   },
@@ -29,96 +30,16 @@ function App() {
     type: 'admin',
     date: '19/02/2022'
   }
-  ]); // save in local storage // take data from mock.json & put here (const data = data from mock.json) as alternative (||) to local storage
+  ]);
   const [asc, setAsc] = useState(true);
-  const [mealRowDB, setMealRowDB ] = useState(['2022-02-17', '2022-02-01', '2022-11-02'])
-
-  const [mealDB, setMealDB] = useState([
-            {
-                id: '54646545',
-                name: 'Olivie',
-                calories: '350',
-                date: '2022-02-17',
-                time: '01:14'
-            },
-            {
-              id: '74846545',
-              name: 'Ragu',
-              calories: '350',
-              date: '2022-02-17',
-              time: '01:14'
-            },
-            {
-              id: '345634646',
-              name: 'Amalgham',
-              calories: '350',
-              date: '2022-02-01',
-              time: '01:14'
-            },
-            {
-              id: '65189816',
-              name: 'Khachapuri',
-              calories: '350',
-              date: '2022-02-01',
-              time: '01:14'
-            },
-            {
-              id: '6189486',
-              name: 'Tako',
-              calories: '350',
-              date: '2022-02-01',
-              time: '01:14'
-            },
-            {
-              id: '61684198',
-              name: 'Chilly Dog',
-              calories: '350',
-              date: '2022-02-01',
-              time: '01:14'
-            },
-            {
-              id: '98168161',
-              name: 'Hot Dog',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-            },
-            {
-              id: '6168461',
-              name: 'Apple pie',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-            },
-            {
-              id: '61681661',
-              name: 'Mosquito',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-            },
-            {
-              id: '616816511',
-              name: 'Mexican',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-            },
-            {
-              id: '616816161',
-              name: 'Avatar Flash',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-            },
-            {
-              id: '89198161',
-              name: 'Bat',
-              calories: '350',
-              date: '2022-11-02',
-              time: '01:14'
-          }
-    ]) // save in local storage
+  const [mealRowDB, setMealRowDB ] = useState(() => {
+      const saved = localStorage.getItem('mealRowDB');
+      return saved ? JSON.parse(saved) : [];
+    })
+  const [mealDB, setMealDB] = useState(() => {
+      const saved = localStorage.getItem('mealDB');
+      return saved ? JSON.parse(saved) : [];
+    })
     const [login, setLogin] = useState(() => {
       const saved = localStorage.getItem('login');
       return saved ? JSON.parse(saved) : false;
@@ -128,20 +49,26 @@ function App() {
       return saved ? JSON.parse(saved) : '';
     });
   const [editUser, setEditUser] = useState('');
+  const [sameUser, setSameUser] = useState(() => {
+    const saved = localStorage.getItem('sameUser');
+    return saved ? JSON.parse(saved) : true;
+  });
     useEffect(() => {
+      localStorage.setItem('mealDB', JSON.stringify(mealDB));
+      localStorage.setItem('mealRowDB', JSON.stringify(mealRowDB));
       localStorage.setItem('login', JSON.stringify(login));
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    }, [login, currentUser]);
-  const [sameUser, setSameUser] = useState(true);
+      localStorage.setItem('sameUser', JSON.stringify(sameUser));
+    }, [login, currentUser, mealDB, mealRowDB, sameUser]);
 
   const addUser = (img, user, pass, passTwo, type, same) => {
     if (pass !== passTwo) {
       alert('passwords don\'t match')
     } else if (usersDB.every(i=>i.name !== user)) {
-      setUsersDB([...usersDB, {name: user, password: pass,	img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type ? type : 'user'}]);
+      setUsersDB([...usersDB, {name: user, password: pass,	img: img ? img : avatar, type: type ? type : 'user'}]);
       setSameUser(false);
     } else if (usersDB.some(i=>i.name=== user) && !same) {
-      const newVal = usersDB.map(i=>i.name === user ? {...i, name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i)
+      const newVal = usersDB.map(i=>i.name === user ? {...i, name: user, password: pass, img: img ? img : avatar} : i)
       setUsersDB(newVal)
       if (same) {
         setSameUser(true);
@@ -150,41 +77,38 @@ function App() {
     } else {
       alert('user with same name alredy exists. please choose another name')
     }    
-    // in edit user if some(i=>i.name === user) then alert('this users alredy exists') else adduser like in addUser()
   }
 
   const changeUser = (savedName, img, user, pass, passTwo, type) => {
     if (pass !== passTwo) {
       alert('passwords don\'t match')
     } else if (type) {
-        setUsersDB(usersDB.map(i=>i.name === savedName ? { name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png', type: type} : i))
+        setUsersDB(usersDB.map(i=>i.name === savedName ? { name: user, password: pass, img: img ? img : avatar, type: type} : i))
         setCurrentUser(user)
     } else {
-        setUsersDB(usersDB.map(i=>i.name === savedName ? {...i, name: user, password: pass, img: img ? img : 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png'} : i))
+        setUsersDB(usersDB.map(i=>i.name === savedName ? {...i, name: user, password: pass, img: img ? img : avatar} : i))
         setCurrentUser(user)
     }
-    // console.log(usersDB[2].img, 'bb img')
-    console.log(usersDB, 'usersDB')
   }
+  // if new meal has new date value, add date value to mealRowDB
+  const mealDates = mealDB.map(i=>i.date)
+  const difference = mealDates.filter(i=>!mealRowDB.includes(i))
+  difference.length > 0 && setMealRowDB([...mealRowDB, difference[0]])
+
   const addMeal = (name, calories, date, time) => {
     (name && calories && date && time) ? 
     setMealDB([...mealDB, {id: Math.floor(Math.random()*90000000).toString(), name: name, calories: calories, date: date, time: time}])
     :
     alert('Please fill in all fields')
-    // if new row value then add row value to mealRowDB
-    const mealDates = mealDB.map(i=>i.date)
-    const difference = mealDates.filter(i=>!mealRowDB.includes(i))
-    console.log(mealDB, 'difference')
-    difference.length > 0 && setMealRowDB([...mealRowDB, difference[0]])
-    // console.log(mealDates, 'mealDates', mealRowDB, 'mealRowDB',  difference, difference.length, 'difLength')
   }
   const delMeal = (id) => {
     setMealDB(mealDB.filter(i=>i.id !== id))
-    // if row value is deleted then delete it from mealRowDB
+    // if no meal exists with given row value then delete row value from mealRowDB
     const mealDates = mealDB.map(i=>i.date)
-    const difference = mealDates.filter(i=>!mealRowDB.includes(i))
+    const difference = mealDates.filter(i=>mealRowDB.includes(i))
     difference.length > 0 && setMealRowDB(mealRowDB.filter(i=>i!==difference[0]))
-    console.log(mealDates, 'mealDates', mealRowDB, 'mealRowDB',  difference, difference.length, 'difLength')
+    mealDates.length === 0 && setMealRowDB([])
+
   }
   const changeMeal = (id, name, calories, date, time) => {
     setMealDB(mealDB.map(i=>i.id === id ? {...i, name: name, calories: calories, date: date, time: time} : i));
